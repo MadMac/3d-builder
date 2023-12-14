@@ -1,0 +1,82 @@
+[gd_scene load_steps=14 format=3 uid="uid://c4t4jka18g6rg"]
+
+[ext_resource type="VoxelGIData" uid="uid://t5f0kfmajsfd" path="res://world_map.VoxelGI_data.res" id="1_hxoqs"]
+[ext_resource type="Script" path="res://CameraController.gd" id="1_npgkl"]
+[ext_resource type="Script" path="res://PawnCharacter.gd" id="1_nyie0"]
+[ext_resource type="Texture2D" uid="uid://34dpc2p3wl4g" path="res://dreifaltigkeitsberg_4k.hdr" id="2_ymqqx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_g2w8d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kevk8"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_a712q"]
+panorama = ExtResource("2_ymqqx")
+
+[sub_resource type="Sky" id="Sky_77xy6"]
+sky_material = SubResource("PanoramaSkyMaterial_a712q")
+
+[sub_resource type="Environment" id="Environment_00rw5"]
+background_mode = 2
+sky = SubResource("Sky_77xy6")
+tonemap_mode = 2
+tonemap_exposure = 1.16
+adjustment_brightness = 0.71
+adjustment_contrast = 1.23
+adjustment_saturation = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1ti0"]
+albedo_color = Color(0.184314, 1, 0.207843, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s0088"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vyimc"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mm6of"]
+
+[node name="WorldMap" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0444317, 0.0262871, -0.00143814)
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.265657, 0.964068, 0, -0.964068, 0.265657, -0.297973, 25.2697, 6.33294)
+script = ExtResource("1_npgkl")
+
+[node name="Pawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.59211, 0)
+
+[node name="PawnCharacter" type="CharacterBody3D" parent="Pawn"]
+script = ExtResource("1_nyie0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pawn/PawnCharacter"]
+mesh = SubResource("BoxMesh_g2w8d")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pawn/PawnCharacter"]
+shape = SubResource("BoxShape3D_kevk8")
+
+[node name="VoxelGI" type="VoxelGI" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0325828, 9.88706, -0.0467345)
+size = Vector3(100, 20, 100)
+data = ExtResource("1_hxoqs")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_00rw5")
+
+[node name="Terrain" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, -0.107351, 0.125776, -0.0315714)
+material_override = SubResource("StandardMaterial3D_n1ti0")
+mesh = SubResource("BoxMesh_s0088")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_vyimc")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 4.69593, 12.0877)
+mesh = SubResource("CylinderMesh_mm6of")
