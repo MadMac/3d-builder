@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://c4t4jka18g6rg"]
+[gd_scene load_steps=15 format=3 uid="uid://c4t4jka18g6rg"]
 
 [ext_resource type="VoxelGIData" uid="uid://t5f0kfmajsfd" path="res://world_map.VoxelGI_data.res" id="1_hxoqs"]
 [ext_resource type="Script" path="res://CameraController.gd" id="1_npgkl"]
 [ext_resource type="Script" path="res://PawnCharacter.gd" id="1_nyie0"]
 [ext_resource type="Texture2D" uid="uid://34dpc2p3wl4g" path="res://dreifaltigkeitsberg_4k.hdr" id="2_ymqqx"]
+[ext_resource type="Script" path="res://GameEngine.gd" id="5_5k873"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_g2w8d"]
 
@@ -80,3 +81,7 @@ shape = SubResource("BoxShape3D_vyimc")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Terrain"]
 transform = Transform3D(1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 4.69593, 12.0877)
 mesh = SubResource("CylinderMesh_mm6of")
+
+[node name="GameEngine" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+script = ExtResource("5_5k873")
+camera = NodePath("../Camera")
