@@ -5,17 +5,28 @@ const RAY_LENGTH = 1000
 
 # Tracks which units are selected
 var selectedUnits: Array = []
+var rightMouseButtonTimer: Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	rightMouseButtonTimer = Timer.new()
+	rightMouseButtonTimer.one_shot = true
+	rightMouseButtonTimer.autostart = false
+	rightMouseButtonTimer.wait_time = 0.5	
+	add_child(rightMouseButtonTimer)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
 func _input(event):
+	
+	# Timter checks how long right button is pressed
+	# so that units are only moved with quick clicks
+	if event.is_action_pressed("mouse_right_button"):
+		rightMouseButtonTimer.wait_time = 0.5
+		rightMouseButtonTimer.start()
+	
 	# UNIT SELECTION
 	if event is InputEventMouseButton && event.button_index == 1:
 		if event.pressed:
@@ -33,11 +44,10 @@ func _input(event):
 				
 			print(selectedUnits)
 	# UNIT MOVEMENT
-	elif event is InputEventMouseButton && event.button_index == 2:
-		if event.pressed:
-			for unit in selectedUnits:
-				var mouse_pos = get_mouse_to_world(event)
-				unit.set_moving_target(mouse_pos.position)
+	elif event.is_action_released("mouse_right_button") && !rightMouseButtonTimer.is_stopped():
+		for unit in selectedUnits:
+			var mouse_pos = get_mouse_to_world(event)
+			unit.set_moving_target(mouse_pos.position)
 
 func get_mouse_to_world(event):
 	var from = camera.project_ray_origin(event.position)
