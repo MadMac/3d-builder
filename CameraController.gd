@@ -13,19 +13,25 @@ var ZOOM_INCREMENT: int = 2
 
 var mouseCursor = load("res://icons8-cursor-24.png")
 
+var cameraCursor
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Input.set_custom_mouse_cursor(mouseCursor)
 	cameraZoon = position.y
-
+	cameraCursor = get_node("CameraCursor")
+	cameraCursor.visible = false
 
 func _input(event):
 	if event is InputEventMouseButton && event.button_index == 2:
 		if isRightButtonDown && !event.pressed:
+			cameraCursor.visible = false
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			Input.warp_mouse(oldCursorPosition)
 		if !isRightButtonDown && event.pressed:
 			oldCursorPosition = event.position
+			cameraCursor.position = event.position
+			cameraCursor.visible = true
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		isRightButtonDown = event.pressed;
 		

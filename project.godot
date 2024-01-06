@@ -15,6 +15,10 @@ run/main_scene="res://world_map.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+mouse_cursor/custom_image="res://icons8-cursor-24.png"
+
 [input]
 
 scroll_in={

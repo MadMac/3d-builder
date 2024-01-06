@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://c4t4jka18g6rg"]
+[gd_scene load_steps=16 format=3 uid="uid://c4t4jka18g6rg"]
 
 [ext_resource type="VoxelGIData" uid="uid://t5f0kfmajsfd" path="res://world_map.VoxelGI_data.res" id="1_hxoqs"]
 [ext_resource type="Script" path="res://CameraController.gd" id="1_npgkl"]
 [ext_resource type="Script" path="res://PawnCharacter.gd" id="1_nyie0"]
+[ext_resource type="Texture2D" uid="uid://w3pa7hlskijq" path="res://icons8-cursor-24.png" id="2_i038e"]
 [ext_resource type="Texture2D" uid="uid://34dpc2p3wl4g" path="res://dreifaltigkeitsberg_4k.hdr" id="2_ymqqx"]
 [ext_resource type="Script" path="res://GameEngine.gd" id="5_5k873"]
 
@@ -44,6 +45,10 @@ shadow_enabled = true
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.265657, 0.964068, 0, -0.964068, 0.265657, -0.297973, 25.2697, 6.33294)
 script = ExtResource("1_npgkl")
+
+[node name="CameraCursor" type="Sprite2D" parent="Camera"]
+texture = ExtResource("2_i038e")
+offset = Vector2(12, 12)
 
 [node name="Pawn" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.59211, 0)
