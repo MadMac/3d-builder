@@ -1,15 +1,38 @@
-[gd_scene load_steps=16 format=3 uid="uid://c4t4jka18g6rg"]
+[gd_scene load_steps=20 format=3 uid="uid://c4t4jka18g6rg"]
 
 [ext_resource type="VoxelGIData" uid="uid://t5f0kfmajsfd" path="res://world_map.VoxelGI_data.res" id="1_hxoqs"]
 [ext_resource type="Script" path="res://CameraController.gd" id="1_npgkl"]
 [ext_resource type="Script" path="res://PawnCharacter.gd" id="1_nyie0"]
 [ext_resource type="Texture2D" uid="uid://w3pa7hlskijq" path="res://icons8-cursor-24.png" id="2_i038e"]
 [ext_resource type="Texture2D" uid="uid://34dpc2p3wl4g" path="res://dreifaltigkeitsberg_4k.hdr" id="2_ymqqx"]
+[ext_resource type="Shader" path="res://pawn_shader.gdshader" id="4_kvtjj"]
 [ext_resource type="Script" path="res://GameEngine.gd" id="5_5k873"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv38y"]
+render_priority = 0
+shader = ExtResource("4_kvtjj")
+shader_parameter/outline_color = null
+shader_parameter/outline_width = 2.0
+shader_parameter/constant_width = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8rc7"]
+next_pass = SubResource("ShaderMaterial_xv38y")
 
 [sub_resource type="BoxMesh" id="BoxMesh_g2w8d"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kevk8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdhbj"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0, 0.25098, 0.752941)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_a712q"]
 panorama = ExtResource("2_ymqqx")
@@ -57,11 +80,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.59211, 0)
 script = ExtResource("1_nyie0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Pawn/PawnCharacter"]
+material_override = SubResource("StandardMaterial3D_o8rc7")
 mesh = SubResource("BoxMesh_g2w8d")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pawn/PawnCharacter"]
 shape = SubResource("BoxShape3D_kevk8")
+
+[node name="SelectUnit" type="Panel" parent="Pawn/PawnCharacter"]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bdhbj")
 
 [node name="VoxelGI" type="VoxelGI" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0325828, 9.88706, -0.0467345)

@@ -37,8 +37,11 @@ func _input(event):
 					print("Object already in array")
 				else:
 					selectedUnits.append(mouse_pos.collider)
+					mouse_pos.collider.enable_unit_selector()
 			else:
 				if selectedUnits.size() > 0:
+					for unit in selectedUnits:
+						unit.disable_unit_selector()
 					selectedUnits.clear()
 				print(mouse_pos.collider)
 				
