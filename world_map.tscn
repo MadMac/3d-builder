@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c4t4jka18g6rg"]
+[gd_scene load_steps=21 format=3 uid="uid://c4t4jka18g6rg"]
 
 [ext_resource type="VoxelGIData" uid="uid://t5f0kfmajsfd" path="res://world_map.VoxelGI_data.res" id="1_hxoqs"]
 [ext_resource type="Script" path="res://CameraController.gd" id="1_npgkl"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://34dpc2p3wl4g" path="res://dreifaltigkeitsberg_4k.hdr" id="2_ymqqx"]
 [ext_resource type="Shader" path="res://pawn_shader.gdshader" id="4_kvtjj"]
 [ext_resource type="Script" path="res://GameEngine.gd" id="5_5k873"]
+[ext_resource type="Script" path="res://UnitSelect.gd" id="8_jj24q"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xv38y"]
 render_priority = 0
@@ -119,3 +120,6 @@ mesh = SubResource("CylinderMesh_mm6of")
 [node name="GameEngine" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("5_5k873")
 camera = NodePath("../Camera")
+
+[node name="UnitSelector" type="Node2D" parent="GameEngine"]
+script = ExtResource("8_jj24q")
