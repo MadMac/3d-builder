@@ -16,13 +16,13 @@ func float_array_to_Vector2Array(coords : Array) -> PackedVector2Array:
 		array.append(Vector2(coord[0], coord[1]))
 	return array
 
-# Called when the node enters the scene tree for the first time.
+# Called when the node enters the scene tree for the first time.q
 func _ready():
 	pass
 
 func _draw():
 	# We are going to paint with this color.
-	var godot_blue : Color = Color("478cbf")
+	var godot_blue : Color = Color("478cbf", 0.3)
 	# We pass the PackedVector2Array to draw the shape.
 	print(head)
 	draw_polygon(head, [ godot_blue ])

@@ -60,3 +60,9 @@ func ZoomTween(zoom: int) -> void:
 	
 	cameraTween = get_tree().create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	cameraTween.tween_property(self, "position:y", zoom, 1)
+
+func get_current_mouse_pos() -> Vector2: 
+	if cameraCursor.visible == false:
+		return get_viewport().get_mouse_position()
+	else:
+		return oldCursorPosition
