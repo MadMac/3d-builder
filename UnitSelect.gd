@@ -24,7 +24,7 @@ func _draw():
 	# We are going to paint with this color.
 	var godot_blue : Color = Color("478cbf", 0.3)
 	# We pass the PackedVector2Array to draw the shape.
-	print(head)
+	# print(head)
 	draw_polygon(head, [ godot_blue ])
 	
 	

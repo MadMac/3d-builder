@@ -55,19 +55,31 @@ func _input(event):
 		if event.is_released():
 			var mouse_pos = get_mouse_to_world(event)
 			print(mouse_pos.collider.name)
-			mouse_dragging = false
-			if mouse_pos.collider.name == "PawnCharacter":
-				if selectedUnits.has(mouse_pos.collider):
-					print("Object already in array")
-				else:
-					selectedUnits.append(mouse_pos.collider)
-					mouse_pos.collider.enable_unit_selector()
+			
+			if mouse_dragging: 
+				mouse_dragging = false
+				selectedUnits.clear()
+				for playerUnit in playerUnits:
+					var playerUnitCharacter = playerUnit.find_child("PawnCharacter")
+					playerUnitCharacter.disable_unit_selector()
+					var unitPosInCamera = camera.unproject_position(playerUnit.position)
+					if is_point_in_square(camera.unproject_position(mouse_drag_init), camera.get_current_mouse_pos(), unitPosInCamera):
+						print(playerUnit.find_child("PawnCharacter"))
+						selectedUnits.append(playerUnitCharacter)
+						playerUnitCharacter.enable_unit_selector()
 			else:
-				if selectedUnits.size() > 0:
-					for unit in selectedUnits:
-						unit.disable_unit_selector()
-					selectedUnits.clear()
-				print(mouse_pos.collider)
+				if mouse_pos.collider.name == "PawnCharacter":
+					if selectedUnits.has(mouse_pos.collider):
+						print("Object already in array")
+					else:
+						selectedUnits.append(mouse_pos.collider)
+						mouse_pos.collider.enable_unit_selector()
+				else:
+					if selectedUnits.size() > 0:
+						for unit in selectedUnits:
+							unit.disable_unit_selector()
+						selectedUnits.clear()
+					print(mouse_pos.collider)
 				
 			print(selectedUnits)
 	# UNIT MOVEMENT
