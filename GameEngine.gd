@@ -54,32 +54,29 @@ func _input(event):
 			
 		if event.is_released():
 			var mouse_pos = get_mouse_to_world(event)
-			print(mouse_pos.collider.name)
-			
+			selectedUnits.clear()
+			if selectedUnits.size() > 0:
+					for unit in selectedUnits:
+						unit.disable_unit_selector()
 			if mouse_dragging: 
 				mouse_dragging = false
-				selectedUnits.clear()
 				for playerUnit in playerUnits:
 					var playerUnitCharacter = playerUnit.find_child("PawnCharacter")
 					playerUnitCharacter.disable_unit_selector()
 					var unitPosInCamera = camera.unproject_position(playerUnit.position)
 					if is_point_in_square(camera.unproject_position(mouse_drag_init), camera.get_current_mouse_pos(), unitPosInCamera):
-						print(playerUnit.find_child("PawnCharacter"))
 						selectedUnits.append(playerUnitCharacter)
 						playerUnitCharacter.enable_unit_selector()
-			else:
-				if mouse_pos.collider.name == "PawnCharacter":
-					if selectedUnits.has(mouse_pos.collider):
-						print("Object already in array")
-					else:
-						selectedUnits.append(mouse_pos.collider)
-						mouse_pos.collider.enable_unit_selector()
+			print("Selectedunits: ", selectedUnits)
+			if mouse_pos.collider.name == "PawnCharacter":
+				if selectedUnits.has(mouse_pos.collider):
+					print("Object already in array")
 				else:
-					if selectedUnits.size() > 0:
-						for unit in selectedUnits:
-							unit.disable_unit_selector()
-						selectedUnits.clear()
-					print(mouse_pos.collider)
+					selectedUnits.append(mouse_pos.collider)
+					mouse_pos.collider.enable_unit_selector()
+				
+					
+			print(mouse_pos.collider)
 				
 			print(selectedUnits)
 	# UNIT MOVEMENT
@@ -96,10 +93,10 @@ func get_mouse_to_world(event):
 	return space_state.intersect_ray(query)
 
 func is_point_in_square(square_top_left: Vector2, square_bottom_right: Vector2, point: Vector2) -> bool:
-	var square_left = square_top_left.x
-	var square_right = square_bottom_right.x
-	var square_top = square_top_left.y
-	var square_bottom = square_bottom_right.y
+	var square_left = square_top_left.x if square_top_left.x <= square_bottom_right.x else square_bottom_right.x
+	var square_right = square_bottom_right.x if square_top_left.x <= square_bottom_right.x else square_top_left.x
+	var square_top = square_top_left.y if square_top_left.y <= square_bottom_right.y else square_bottom_right.y
+	var square_bottom = square_bottom_right.y if square_top_left.y <= square_bottom_right.y else square_top_left.y
 
 	# Check if the point is within the square's boundaries
 	if point.x >= square_left && point.x <= square_right && point.y >= square_top && point.y <= square_bottom:
