@@ -12,6 +12,7 @@ var mouse_dragging: bool = false
 var mouse_drag_init: Vector3
 var unitSelector
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rightMouseButtonTimer = Timer.new()
@@ -21,9 +22,7 @@ func _ready():
 	unitSelector = get_node("UnitSelector")
 	add_child(rightMouseButtonTimer)
 	
-	# TODO Remove with proper unit list implementation 
-	var playerUnit = get_node("/root/WorldMap/Pawn")
-	playerUnits.append(playerUnit)
+	generate_initial_units()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -61,24 +60,21 @@ func _input(event):
 			if mouse_dragging: 
 				mouse_dragging = false
 				for playerUnit in playerUnits:
-					var playerUnitCharacter = playerUnit.find_child("PawnCharacter")
+					var playerUnitCharacter = playerUnit
 					playerUnitCharacter.disable_unit_selector()
 					var unitPosInCamera = camera.unproject_position(playerUnit.position)
 					if is_point_in_square(camera.unproject_position(mouse_drag_init), camera.get_current_mouse_pos(), unitPosInCamera):
 						selectedUnits.append(playerUnitCharacter)
 						playerUnitCharacter.enable_unit_selector()
 			print("Selectedunits: ", selectedUnits)
-			if mouse_pos.collider.name == "PawnCharacter":
+			
+			if playerUnits.has(mouse_pos.collider):
 				if selectedUnits.has(mouse_pos.collider):
 					print("Object already in array")
 				else:
 					selectedUnits.append(mouse_pos.collider)
 					mouse_pos.collider.enable_unit_selector()
-				
 					
-			print(mouse_pos.collider)
-				
-			print(selectedUnits)
 	# UNIT MOVEMENT
 	elif event.is_action_released("mouse_right_button") && !rightMouseButtonTimer.is_stopped():
 		for unit in selectedUnits:
@@ -103,3 +99,12 @@ func is_point_in_square(square_top_left: Vector2, square_bottom_right: Vector2, 
 		return true
 	else:
 		return false
+
+func generate_initial_units(): 
+	for n in 10:
+		var pawnScene = load("res://pawn.tscn")
+		var instance = pawnScene.instantiate()
+		instance.position = Vector3(randf_range(-40, 40), 5, randf_range(-30, 30))
+		print(instance)
+		add_child(instance)
+		playerUnits.append(instance)

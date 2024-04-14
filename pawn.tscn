@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://cacrjcv00ho57"]
+
+[ext_resource type="Script" path="res://PawnCharacter.gd" id="1_ainfm"]
+[ext_resource type="Shader" path="res://pawn_shader.gdshader" id="2_qpldq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xv38y"]
+render_priority = 0
+shader = ExtResource("2_qpldq")
+shader_parameter/outline_color = null
+shader_parameter/outline_width = 2.0
+shader_parameter/constant_width = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8rc7"]
+next_pass = SubResource("ShaderMaterial_xv38y")
+
+[sub_resource type="BoxMesh" id="BoxMesh_g2w8d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kevk8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bdhbj"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0, 0.25098, 0.752941)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="PawnCharacter" type="CharacterBody3D"]
+script = ExtResource("1_ainfm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_o8rc7")
+mesh = SubResource("BoxMesh_g2w8d")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_kevk8")
+
+[node name="SelectUnit" type="Panel" parent="."]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bdhbj")
+
+[node name="Pawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.59211, 0)

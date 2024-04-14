@@ -15,6 +15,7 @@ func _ready():
 	unitSelectSquare = get_node("SelectUnit")
 	worldCamera = get_node("/root/WorldMap/Camera")
 	unitSelectSquare.visible = false
+	moving_target = position
 
 func _process(delta):
 	var unitPosInCamera = worldCamera.unproject_position(global_transform.origin)
@@ -32,6 +33,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
+	
 	var normal_to_target = (moving_target - position).normalized()
 	if normal_to_target:
 		velocity.x = normal_to_target.x * SPEED
@@ -46,6 +48,7 @@ func _physics_process(delta):
 
 func set_moving_target(target):
 	print("New moving target: " + str(target))
+	print("Current Pos: " + str(position))
 	moving_target = target
 	
 func enable_unit_selector():
