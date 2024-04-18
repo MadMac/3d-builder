@@ -12,6 +12,11 @@ var mouse_dragging: bool = false
 var mouse_drag_init: Vector3
 var unitSelector
 
+var playerBuildings: Array = []
+
+var is_building_mode: bool = false
+var building_object: RigidBody3D = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,43 +48,56 @@ func _input(event):
 		rightMouseButtonTimer.start()
 	
 	# UNIT SELECTION
-	if event is InputEventMouseButton && event.button_index == 1:
-		if event.is_pressed():
-			mouse_dragging = true
-			var mouse_pos = get_mouse_to_world(event)
-			mouse_drag_init = mouse_pos.position
-			var unprojected_init_coord = camera.unproject_position(mouse_drag_init)
-			unitSelector.set_coords(unprojected_init_coord, unprojected_init_coord)
+	if !is_building_mode:
+		if event is InputEventMouseButton && event.button_index == 1:
 			
-		if event.is_released():
-			var mouse_pos = get_mouse_to_world(event)
-			selectedUnits.clear()
-			if selectedUnits.size() > 0:
-					for unit in selectedUnits:
-						unit.disable_unit_selector()
-			if mouse_dragging: 
-				mouse_dragging = false
-				for playerUnit in playerUnits:
-					var playerUnitCharacter = playerUnit
-					playerUnitCharacter.disable_unit_selector()
-					var unitPosInCamera = camera.unproject_position(playerUnit.position)
-					if is_point_in_square(camera.unproject_position(mouse_drag_init), camera.get_current_mouse_pos(), unitPosInCamera):
-						selectedUnits.append(playerUnitCharacter)
-						playerUnitCharacter.enable_unit_selector()
-			print("Selectedunits: ", selectedUnits)
-			
-			if playerUnits.has(mouse_pos.collider):
-				if selectedUnits.has(mouse_pos.collider):
-					print("Object already in array")
-				else:
-					selectedUnits.append(mouse_pos.collider)
-					mouse_pos.collider.enable_unit_selector()
+				if event.is_pressed():
+					mouse_dragging = true
+					var mouse_pos = get_mouse_to_world(event)
+					mouse_drag_init = mouse_pos.position
+					var unprojected_init_coord = camera.unproject_position(mouse_drag_init)
+					unitSelector.set_coords(unprojected_init_coord, unprojected_init_coord)
 					
-	# UNIT MOVEMENT
-	elif event.is_action_released("mouse_right_button") && !rightMouseButtonTimer.is_stopped():
-		for unit in selectedUnits:
-			var mouse_pos = get_mouse_to_world(event)
-			unit.set_moving_target(mouse_pos.position)
+				if event.is_released():
+					var mouse_pos = get_mouse_to_world(event)
+					selectedUnits.clear()
+					if selectedUnits.size() > 0:
+							for unit in selectedUnits:
+								unit.disable_unit_selector()
+					if mouse_dragging: 
+						mouse_dragging = false
+						for playerUnit in playerUnits:
+							var playerUnitCharacter = playerUnit
+							playerUnitCharacter.disable_unit_selector()
+							var unitPosInCamera = camera.unproject_position(playerUnit.position)
+							if is_point_in_square(camera.unproject_position(mouse_drag_init), camera.get_current_mouse_pos(), unitPosInCamera):
+								selectedUnits.append(playerUnitCharacter)
+								playerUnitCharacter.enable_unit_selector()
+					print("Selectedunits: ", selectedUnits)
+					
+					if playerUnits.has(mouse_pos.collider):
+						if selectedUnits.has(mouse_pos.collider):
+							print("Object already in array")
+						else:
+							selectedUnits.append(mouse_pos.collider)
+							mouse_pos.collider.enable_unit_selector()
+						
+		# UNIT MOVEMENT
+		elif event.is_action_released("mouse_right_button") && !rightMouseButtonTimer.is_stopped():
+			for unit in selectedUnits:
+				var mouse_pos = get_mouse_to_world(event)
+				unit.set_moving_target(mouse_pos.position)
+	
+	if is_building_mode:
+		var mouse_pos = get_mouse_to_world(event)
+		mouse_pos.position = Vector3(mouse_pos.position.x, 2, mouse_pos.position.z)
+		building_object.position = mouse_pos.position
+		if event is InputEventMouseButton && event.button_index == 1:
+			is_building_mode = false
+			building_object.get_node("CollisionShape3D").disabled = false
+			building_object.gravity_scale = 1
+			building_object = null
+		
 
 func get_mouse_to_world(event):
 	var from = camera.project_ray_origin(event.position)
@@ -101,10 +119,16 @@ func is_point_in_square(square_top_left: Vector2, square_bottom_right: Vector2, 
 		return false
 
 func generate_initial_units(): 
-	for n in 10:
+	for n in 50:
 		var pawnScene = load("res://pawn.tscn")
 		var instance = pawnScene.instantiate()
 		instance.position = Vector3(randf_range(-40, 40), 5, randf_range(-30, 30))
-		print(instance)
 		add_child(instance)
 		playerUnits.append(instance)
+		
+func start_building_mode():
+	is_building_mode = true
+	var buildingObject = load("res://house_object.tscn")
+	building_object = buildingObject.instantiate()
+	add_child(building_object)
+	
