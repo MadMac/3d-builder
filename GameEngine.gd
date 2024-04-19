@@ -50,16 +50,15 @@ func _input(event):
 	# UNIT SELECTION
 	if !is_building_mode:
 		if event is InputEventMouseButton && event.button_index == 1:
-			
 				if event.is_pressed():
 					mouse_dragging = true
-					var mouse_pos = get_mouse_to_world(event)
+					var mouse_pos = get_mouse_to_world(event.position)
 					mouse_drag_init = mouse_pos.position
 					var unprojected_init_coord = camera.unproject_position(mouse_drag_init)
 					unitSelector.set_coords(unprojected_init_coord, unprojected_init_coord)
 					
 				if event.is_released():
-					var mouse_pos = get_mouse_to_world(event)
+					var mouse_pos = get_mouse_to_world(event.position)
 					selectedUnits.clear()
 					if selectedUnits.size() > 0:
 							for unit in selectedUnits:
@@ -85,23 +84,24 @@ func _input(event):
 		# UNIT MOVEMENT
 		elif event.is_action_released("mouse_right_button") && !rightMouseButtonTimer.is_stopped():
 			for unit in selectedUnits:
-				var mouse_pos = get_mouse_to_world(event)
+				var mouse_pos = get_mouse_to_world(event.position)
 				unit.set_moving_target(mouse_pos.position)
 	
 	if is_building_mode:
-		var mouse_pos = get_mouse_to_world(event)
+		var mouse_pos = get_mouse_to_world(camera.get_current_mouse_pos())
 		mouse_pos.position = Vector3(mouse_pos.position.x, 2, mouse_pos.position.z)
 		building_object.position = mouse_pos.position
 		if event is InputEventMouseButton && event.button_index == 1:
 			is_building_mode = false
 			building_object.get_node("CollisionShape3D").disabled = false
 			building_object.gravity_scale = 1
+			building_object.start_building()
 			building_object = null
-		
+			
 
-func get_mouse_to_world(event):
-	var from = camera.project_ray_origin(event.position)
-	var to = from + camera.project_ray_normal(event.position) * RAY_LENGTH
+func get_mouse_to_world(pos):
+	var from = camera.project_ray_origin(pos)
+	var to = from + camera.project_ray_normal(pos) * RAY_LENGTH
 	var space_state = get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(from, to)
 	return space_state.intersect_ray(query)
