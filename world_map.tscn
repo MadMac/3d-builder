@@ -19,7 +19,6 @@ sky_material = SubResource("PanoramaSkyMaterial_a712q")
 background_mode = 2
 sky = SubResource("Sky_77xy6")
 tonemap_mode = 2
-tonemap_exposure = 1.16
 adjustment_brightness = 0.71
 adjustment_contrast = 1.23
 adjustment_saturation = 0.25

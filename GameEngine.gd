@@ -91,7 +91,7 @@ func _input(event):
 		var mouse_pos = get_mouse_to_world(camera.get_current_mouse_pos())
 		mouse_pos.position = Vector3(mouse_pos.position.x, 2, mouse_pos.position.z)
 		building_object.position = mouse_pos.position
-		if event is InputEventMouseButton && event.button_index == 1:
+		if event is InputEventMouseButton && event.button_index == 1 && building_object.can_build():
 			is_building_mode = false
 			building_object.get_node("CollisionShape3D").disabled = false
 			building_object.gravity_scale = 1

@@ -30,6 +30,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="PawnCharacter" type="CharacterBody3D"]
+collision_layer = 3
 script = ExtResource("1_ainfm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
