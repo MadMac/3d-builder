@@ -1,5 +1,14 @@
 extends Node3D
 
+var player_materials: Dictionary = {"wood": 100, "stone": 1000}
+
+var buildable_buildings: Dictionary = {
+	"house" = {
+		"wood": 100,
+		"stone": 100
+	}
+}
+
 @export var camera: Camera3D
 const RAY_LENGTH = 1000
 
@@ -131,4 +140,10 @@ func start_building_mode():
 	var buildingObject = load("res://house_object.tscn")
 	building_object = buildingObject.instantiate()
 	add_child(building_object)
+	
+func is_enough_materials_building(building):
+	if (buildable_buildings[building]["wood"] <= player_materials["wood"] && buildable_buildings[building]["stone"] <= player_materials["stone"]):
+		return true;
+	else:
+		return false;
 	
