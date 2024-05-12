@@ -71,19 +71,22 @@ shape = SubResource("BoxShape3D_vyimc")
 transform = Transform3D(1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 4.69593, 12.0877)
 mesh = SubResource("CylinderMesh_mm6of")
 
-[node name="GameEngine" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+[node name="GameEngine" type="Node3D" parent="." node_paths=PackedStringArray("camera", "UI")]
 script = ExtResource("5_5k873")
 camera = NodePath("../Camera")
+UI = NodePath("../UI")
 
 [node name="UnitSelector" type="Node2D" parent="GameEngine"]
 script = ExtResource("8_jj24q")
 
-[node name="UI" type="Control" parent="."]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("woodValueElement", "stoneValueElement")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("7_8buew")
+woodValueElement = NodePath("ResourcesUI/WoodValue")
+stoneValueElement = NodePath("ResourcesUI/StoneValue")
 
 [node name="BuildingsButton" type="Button" parent="UI"]
 layout_mode = 0
@@ -124,3 +127,47 @@ offset_right = 708.0
 offset_bottom = 228.0
 theme_override_font_sizes/font_size = 10
 text = "X"
+
+[node name="ResourcesUI" type="Control" parent="UI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="Panel" parent="UI/ResourcesUI"]
+layout_mode = 0
+offset_left = 899.0
+offset_top = 18.0
+offset_right = 1131.0
+offset_bottom = 58.0
+
+[node name="WoodLabel" type="Label" parent="UI/ResourcesUI"]
+layout_mode = 0
+offset_left = 918.0
+offset_top = 25.0
+offset_right = 972.0
+offset_bottom = 48.0
+text = "Wood: "
+
+[node name="StoneLabel" type="Label" parent="UI/ResourcesUI"]
+layout_mode = 0
+offset_left = 1021.0
+offset_top = 25.0
+offset_right = 1075.0
+offset_bottom = 48.0
+text = "Stone:"
+
+[node name="WoodValue" type="Label" parent="UI/ResourcesUI"]
+layout_mode = 0
+offset_left = 974.0
+offset_top = 25.0
+offset_right = 1014.0
+offset_bottom = 48.0
+text = "0"
+
+[node name="StoneValue" type="Label" parent="UI/ResourcesUI"]
+layout_mode = 0
+offset_left = 1075.0
+offset_top = 25.0
+offset_right = 1115.0
+offset_bottom = 48.0
+text = "0"

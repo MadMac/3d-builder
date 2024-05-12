@@ -19,5 +19,5 @@ func _process(delta):
 func building_selected(building):
 	print("Start building: ", building)
 	if game_engine.is_enough_materials_building(building):
-		game_engine.start_building_mode()
+		game_engine.start_building_mode(building)
 		ui.buildings_button_clicked()

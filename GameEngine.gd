@@ -12,6 +12,8 @@ var buildable_buildings: Dictionary = {
 @export var camera: Camera3D
 const RAY_LENGTH = 1000
 
+@export var UI: Control
+
 var playerUnits: Array = []
 
 # Tracks which units are selected
@@ -25,6 +27,8 @@ var playerBuildings: Array = []
 
 var is_building_mode: bool = false
 var building_object: RigidBody3D = null
+var building_item = null
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -35,6 +39,7 @@ func _ready():
 	rightMouseButtonTimer.wait_time = 0.5	
 	unitSelector = get_node("UnitSelector")
 	add_child(rightMouseButtonTimer)
+	update_ui()
 	
 	generate_initial_units()
 
@@ -107,6 +112,9 @@ func _input(event):
 			building_object.start_building()
 			building_object = null
 			
+			player_materials["wood"] -= buildable_buildings[building_item]["wood"]
+			player_materials["stone"] -= buildable_buildings[building_item]["stone"]
+			update_ui()
 
 func get_mouse_to_world(pos):
 	var from = camera.project_ray_origin(pos)
@@ -135,15 +143,21 @@ func generate_initial_units():
 		add_child(instance)
 		playerUnits.append(instance)
 		
-func start_building_mode():
+func start_building_mode(building):
 	is_building_mode = true
 	var buildingObject = load("res://house_object.tscn")
 	building_object = buildingObject.instantiate()
 	add_child(building_object)
+	building_item = building
+	
 	
 func is_enough_materials_building(building):
 	if (buildable_buildings[building]["wood"] <= player_materials["wood"] && buildable_buildings[building]["stone"] <= player_materials["stone"]):
 		return true;
 	else:
 		return false;
+		
+func update_ui():
+	UI.update_wood_value(player_materials["wood"]);
+	UI.update_stone_value(player_materials["stone"])
 	
