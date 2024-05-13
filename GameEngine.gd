@@ -5,7 +5,8 @@ var player_materials: Dictionary = {"wood": 100, "stone": 1000}
 var buildable_buildings: Dictionary = {
 	"house" = {
 		"wood": 100,
-		"stone": 100
+		"stone": 100,
+		"object": "res://house_object.tscn"
 	}
 }
 
@@ -145,7 +146,7 @@ func generate_initial_units():
 		
 func start_building_mode(building):
 	is_building_mode = true
-	var buildingObject = load("res://house_object.tscn")
+	var buildingObject = load(buildable_buildings[building]["object"])
 	building_object = buildingObject.instantiate()
 	add_child(building_object)
 	building_item = building
