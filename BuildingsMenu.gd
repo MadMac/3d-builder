@@ -10,6 +10,10 @@ func _ready():
 	closeButton.pressed.connect(ui.buildings_button_clicked)
 	var houseButton = get_node("HouseButton")
 	houseButton.pressed.connect(building_selected.bind("house"))
+	var quarryButton = get_node("QuarryButton")
+	quarryButton.pressed.connect(building_selected.bind("quarry"))
+	var lumberjackButton = get_node("LumberjackButton")
+	lumberjackButton.pressed.connect(building_selected.bind("lumberjack"))
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

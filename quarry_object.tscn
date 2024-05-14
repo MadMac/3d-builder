@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://dv6vfjoybbqk6"]
+
+[ext_resource type="Script" path="res://quarry_object.gd" id="1_orexf"]
+[ext_resource type="Material" uid="uid://eo5o7sdv5hb1" path="res://allowed_building_material.tres" id="2_v5h26"]
+[ext_resource type="Material" uid="uid://cjs50wn4f0obo" path="res://denied_building_material.tres" id="3_0jgne"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xn5nt"]
+albedo_color = Color(0.411765, 0.396078, 0.34902, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yaolt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dtx4a"]
+size = Vector3(1, 4, 2)
+
+[node name="QuarryObject" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 2
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+gravity_scale = 0.0
+script = ExtResource("1_orexf")
+allowed_material = ExtResource("2_v5h26")
+denied_material = ExtResource("3_0jgne")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 4, 0, 0, 0, 2, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_xn5nt")
+mesh = SubResource("BoxMesh_yaolt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_dtx4a")

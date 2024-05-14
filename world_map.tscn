@@ -119,6 +119,24 @@ offset_right = 482.0
 offset_bottom = 249.0
 text = "House"
 
+[node name="QuarryButton" type="Button" parent="UI/BuildingsMenu"]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 213.0
+offset_right = 556.0
+offset_bottom = 249.0
+text = "Quarry
+"
+
+[node name="LumberjackButton" type="Button" parent="UI/BuildingsMenu"]
+layout_mode = 0
+offset_left = 425.0
+offset_top = 260.0
+offset_right = 525.0
+offset_bottom = 296.0
+text = "Lumberjack
+"
+
 [node name="CloseButton" type="Button" parent="UI/BuildingsMenu"]
 layout_mode = 0
 offset_left = 687.0

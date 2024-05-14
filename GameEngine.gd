@@ -1,12 +1,22 @@
 extends Node3D
 
-var player_materials: Dictionary = {"wood": 100, "stone": 1000}
+var player_materials: Dictionary = {"wood": 1000, "stone": 1000}
 
 var buildable_buildings: Dictionary = {
 	"house" = {
 		"wood": 100,
 		"stone": 100,
 		"object": "res://house_object.tscn"
+	},
+	"quarry" = {
+		"wood": 50,
+		"stone": 50,
+		"object": "res://quarry_object.tscn"
+	},
+	"lumberjack" = {
+		"wood": 25,
+		"stone": 0,
+		"object": "res://lumberjack_object.tscn"
 	}
 }
 
@@ -156,6 +166,7 @@ func is_enough_materials_building(building):
 	if (buildable_buildings[building]["wood"] <= player_materials["wood"] && buildable_buildings[building]["stone"] <= player_materials["stone"]):
 		return true;
 	else:
+		print("Not enough resources")
 		return false;
 		
 func update_ui():
