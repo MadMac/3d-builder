@@ -43,6 +43,7 @@ func _process(delta):
 func start_building():
 	current_status = BuildingStatus.INPROGRESS
 	geometry3d.material_override = default_material
+	position.y += 2
 	enable_physics()
 
 func complete_building():

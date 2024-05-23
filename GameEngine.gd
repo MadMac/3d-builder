@@ -117,15 +117,7 @@ func _input(event):
 		mouse_pos.position = Vector3(mouse_pos.position.x, 2, mouse_pos.position.z)
 		building_object.position = mouse_pos.position
 		if event is InputEventMouseButton && event.button_index == 1 && building_object.can_build():
-			is_building_mode = false
-			building_object.get_node("CollisionShape3D").disabled = false
-			building_object.gravity_scale = 1
-			building_object.start_building()
-			building_object = null
-			
-			player_materials["wood"] -= buildable_buildings[building_item]["wood"]
-			player_materials["stone"] -= buildable_buildings[building_item]["stone"]
-			update_ui()
+			build_building()
 
 func get_mouse_to_world(pos):
 	var from = camera.project_ray_origin(pos)
@@ -173,3 +165,13 @@ func update_ui():
 	UI.update_wood_value(player_materials["wood"]);
 	UI.update_stone_value(player_materials["stone"])
 	
+func build_building():
+	is_building_mode = false
+	building_object.get_node("CollisionShape3D").disabled = false
+	building_object.gravity_scale = 1
+	building_object.start_building()
+	building_object = null
+	
+	player_materials["wood"] -= buildable_buildings[building_item]["wood"]
+	player_materials["stone"] -= buildable_buildings[building_item]["stone"]
+	update_ui()
